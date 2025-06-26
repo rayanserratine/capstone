@@ -1,12 +1,10 @@
 const pool = require('../config/db');
 
-// Get entries by section
-const getEntriesBySection = async (req, res) => {
+const getEntries = async (req, res) => {
   const { sectionId } = req.params;
-
   try {
     const result = await pool.query(
-      'SELECT * FROM entries WHERE section_id = $1 ORDER BY date DESC',
+      'SELECT * FROM entries WHERE section_id = $1',
       [sectionId]
     );
     res.json(result.rows);
@@ -16,31 +14,29 @@ const getEntriesBySection = async (req, res) => {
   }
 };
 
-// Add a new entry
-const addEntry = async (req, res) => {
-  const { sectionId } = req.params;
-  const { title, amount, date, note } = req.body;
-
+const createEntry = async (req, res) => {
+  const { section_id, title, amount, date, note } = req.body;
   try {
     const result = await pool.query(
-      'INSERT INTO entries (section_id, title, amount, date, note) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-      [sectionId, title, amount, date, note]
+      `INSERT INTO entries (section_id, title, amount, date, note)
+       VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+      [section_id, title, amount, date, note]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {
-    console.error('Add Entry Error:', err);
+    console.error('Create Entry Error:', err);
     res.status(500).json({ message: 'Server error' });
   }
 };
 
-// Update an entry
 const updateEntry = async (req, res) => {
   const { id } = req.params;
   const { title, amount, date, note } = req.body;
-
   try {
     const result = await pool.query(
-      'UPDATE entries SET title = $1, amount = $2, date = $3, note = $4 WHERE id = $5 RETURNING *',
+      `UPDATE entries
+       SET title = $1, amount = $2, date = $3, note = $4
+       WHERE id = $5 RETURNING *`,
       [title, amount, date, note, id]
     );
     if (result.rows.length === 0) {
@@ -53,10 +49,8 @@ const updateEntry = async (req, res) => {
   }
 };
 
-// Delete an entry
 const deleteEntry = async (req, res) => {
   const { id } = req.params;
-
   try {
     const result = await pool.query(
       'DELETE FROM entries WHERE id = $1 RETURNING *',
@@ -73,8 +67,8 @@ const deleteEntry = async (req, res) => {
 };
 
 module.exports = {
-  getEntriesBySection,
-  addEntry,
+  getEntries,
+  createEntry,
   updateEntry,
   deleteEntry
 };
