@@ -22,9 +22,17 @@ const registerUser = async (req, res) => {
       [name, email, hashedPassword]
     );
 
-    res.status(201).json(newUser.rows[0]);
+    // Generate JWT token
+    const token = jwt.sign({ userId: newUser.rows[0].id }, process.env.JWT_SECRET, {
+      expiresIn: '1d',
+    });
+
+    res.status(201).json({
+      token,
+      user: newUser.rows[0],
+    });
   } catch (err) {
-    console.error('❌ Register Error:', err); // Print full error for debugging
+    console.error('❌ Register Error:', err);
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -48,19 +56,21 @@ const loginUser = async (req, res) => {
       return res.status(400).json({ message: 'Invalid email or password' });
     }
 
-    // Create JWT token
-    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1d' });
+    // Generate JWT token
+    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
+      expiresIn: '1d',
+    });
 
     res.json({
       token,
       user: {
         id: user.id,
         name: user.name,
-        email: user.email
-      }
+        email: user.email,
+      },
     });
   } catch (err) {
-    console.error('❌ Login Error:', err); // Print full error for debugging
+    console.error('❌ Login Error:', err);
     res.status(500).json({ message: 'Server error' });
   }
 };
