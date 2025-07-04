@@ -15,36 +15,6 @@ Regular Job
 Side Job
 Passive (Investments)
 
-Example:
-
-Total Income: $2500
-
-Regular Job: $2000
-
-Side Job: $250
-
-Passive Income: $250
-
-Spends
-
-Transportation: $107
-
-Food: $400
-
-Fun: $300
-
-Total Spends: $1000
-
-Savings
-
-Travel
-
-New Car
-
-Investments
-
-Total Savings: $5000
-
 The app will generate graphics to help users better manage their finances. At the end of the year, for example, users will understand what spending needs to be reduced to allocate more money for goals like travel.
 
 Technology Stack
