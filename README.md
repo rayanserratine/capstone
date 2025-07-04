@@ -20,7 +20,7 @@ The app will generate graphics to help users better manage their finances. At th
 Technology Stack
 
 Front End: CSS, React JS
-Back End: NodeJS, Python, SQL
+Back End: NodeJS, Express, JWT
 Database: PostgreSQL
 
 User Stories
@@ -32,6 +32,7 @@ Luiggi: As an artist, I want to track how many paintings I need to sell in order
 Additional Features
 
 Import your bank information from your bank app.
+Get notifications.
 
 Why Use Many Money?
 
